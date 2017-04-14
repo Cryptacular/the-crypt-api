@@ -1,5 +1,4 @@
-from flask import Flask
-from flask import jsonify
+from flask import Flask, jsonify, request
 import requests
 
 baseUri = 'https://the-crypt-1047.firebaseio.com/'
@@ -63,7 +62,7 @@ app = Flask(__name__)
 def not_found(error=None):
     message = {
             'status': 404,
-            'message': 'Not Found'
+            'message': 'Not Found: ' + request.url
     }
     resp = jsonify(message)
     resp.status_code = 404
@@ -89,5 +88,16 @@ def getPost(postid):
         return not_found()
 
 
+@app.after_request
+def add_header(response):
+    """
+    Add headers to both force latest IE rendering engine or Chrome Frame,
+    and also to cache the rendered page for 10 minutes.
+    """
+    response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+    response.headers['Cache-Control'] = 'public, max-age=600'
+    return response
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
