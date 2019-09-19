@@ -1,0 +1,7 @@
+{
+  "name": "the-crypt-api",
+  "routes": [
+    { "src": "/", "dest": "api" },
+    { "src": "/(?<endpoint>[^/]+)", "dest": "api/$endpoint" }
+  ]
+}
